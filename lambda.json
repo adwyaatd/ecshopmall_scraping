@@ -1,0 +1,17 @@
+{
+  "name": "ecshopmall-base-scraping",
+  "description": "scrape BASE and save DB",
+  "region": "ap-northeast-1",
+  "runtime": "python3.7",
+  "handler": "base.lambda_handler",
+  "role": "arn:aws:iam::295468102380:role/ecshopmall-lambda-role",
+  "timeout": 900,
+  "memory": 512,
+  "ignore": [
+    "^lambda\\.json$",
+    "^docker-compose\\.yml$",
+    "dockerfile$",
+  "\\.git$",
+    "lambda_function\\.zip$"
+  ]
+}
