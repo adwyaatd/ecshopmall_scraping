@@ -20,12 +20,24 @@ Resources:
       Runtime: python3.7
       Architectures:
         - x86_64
+      Layers:
+        - !Ref MyLayer
       Events:
         ESMScraping:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /base
             Method: get
+  MyLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      Description: MyLayer description
+      ContentUri: ./layers/
+      CompatibleRuntimes:
+        - python3.7
+      LayerName: "ESM-scraping-packages"
+    Metadata:
+      BuildMethod: python3.7
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
