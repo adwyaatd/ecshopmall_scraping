@@ -171,6 +171,7 @@ def scrape_shop_list():
 
 def save_shoplist(shop_list):
     print("shop_list")
+    print(shop_list)
 
 
 def main():
@@ -178,11 +179,14 @@ def main():
 
     if shop_list:
         print("get result")
-        save_shoplist(shop_list)
+        # print(f"shop_list: {shop_list}")
+        # print(f"scr_err_cnt: {scr_err_cnt}")
+        # save_shoplist(shop_list)
         return True
     else:
         print("no result")
         res = {}
+        return False
 
 
 def lambda_handler(event, context):
@@ -191,10 +195,20 @@ def lambda_handler(event, context):
 
         if result:
             print("get result")
-            res = {'statusCode': 200}
+            res = {
+                "statusCode": 200,
+                "body": json.dumps({
+                    "message": "success!",
+                })
+            }
         else:
             print("no result")
-            res = {'statusCode': 400}
+            res = {
+                "statusCode": 400,
+                "body": json.dumps({
+                    "message": "failed!",
+                })
+            }
 
         return res
     except Exception as e:
