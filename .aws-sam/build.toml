@@ -10,3 +10,11 @@ packagetype = "Zip"
 functions = ["ESMScrapingFunction"]
 
 [layer_build_definitions]
+[layer_build_definitions.49d29299-1a1e-49ff-80c5-805a7eaed858]
+layer_name = "MyLayer"
+codeuri = "/Users/hosodaraimu/myapp/ecshopmall_scraping/layers"
+build_method = "python3.7"
+compatible_runtimes = ["python3.7"]
+architecture = "x86_64"
+manifest_hash = ""
+layer = "MyLayer"
