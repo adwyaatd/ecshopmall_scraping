@@ -246,3 +246,5 @@ $RECYCLE.BIN/
 __pycache__
 *.zip
 */deps
+chromedriver
+headless-chromium
