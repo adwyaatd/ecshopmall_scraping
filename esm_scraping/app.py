@@ -8,9 +8,12 @@ import re
 
 # import requests
 from selenium import webdriver
+from selenium.webdriver.chrome import options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
+import boto3
+from boto3.dynamodb.conditions import Key, Attr
 
 
 def headless_chrome():
@@ -182,19 +185,44 @@ def scrape_shop_list():
         return shop_list, scr_err_cnt
 
 
+def fetch_all_shop_list():
+    dynamodb = boto3.resource("dynamodb")
+    ESM_table = dynamodb.Table("ESM")
+    query_data = ESM_table.query(
+        IndexName="GSI1",
+        KeyConditionExpression=Key("SK").eq("shop") &
+        Key("PK").begins_with("shop_")
+    )
+    shops = query_data["Items"]
+    return shops
+
+
+def remove_duplicate(scraped_shop_list):
+    # DynamoDBからショップリストを取得
+    all_shops_list = fetch_all_shop_list()
+    # ショップリストと照合
+    # 重複を排除
+    shop_name_list = [shop["shop_name"] for shop in all_shops_list]
+    new_shop_list = [shop for i, shop in enumerate(
+        all_shops_list) if shop["shop_name"] not in shop_name_list[0:i]]
+    return new_shop_list
+
+
 def save_shoplist(shop_list):
     print("shop_list")
     print(shop_list)
 
 
 def main():
-    shop_list, scr_err_cnt = scrape_shop_list()
+    scraped_shop_list, scr_err_cnt = scrape_shop_list()
 
-    if shop_list:
+    if scraped_shop_list:
         print("get result")
-        # print(f"shop_list: {shop_list}")
+        print("scraped_shop_list")
+        print(scraped_shop_list)
         # print(f"scr_err_cnt: {scr_err_cnt}")
-        # save_shoplist(shop_list)
+        new_shop_list = remove_duplicate(scraped_shop_list)
+        save_shoplist(new_shop_list)
         return True
     else:
         print("no result")
