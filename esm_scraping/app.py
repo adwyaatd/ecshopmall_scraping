@@ -211,6 +211,9 @@ def remove_duplicate(scraped_shop_list):
 def save_shoplist(shop_list):
     print("shop_list")
     print(shop_list)
+    dynamodb = boto3.resource("dynamodb")
+    ESM_table = dynamodb.Table("ESM")
+    # shopごとにinsert
 
 
 def main():
