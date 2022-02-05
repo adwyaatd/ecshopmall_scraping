@@ -5,6 +5,7 @@ from typing import Pattern
 import traceback
 from time import sleep
 import re
+import uuid
 
 # import requests
 from selenium import webdriver
@@ -208,36 +209,68 @@ def remove_duplicate(scraped_shop_list):
     return new_shop_list
 
 
-def save_shoplist(shop_list):
-    print("shop_list")
-    print(shop_list)
-    dynamodb = boto3.resource("dynamodb")
-    ESM_table = dynamodb.Table("ESM")
-    # shopごとにinsert
+def fetch_last_shop_num(dynamodb):
+    table_name = "shopnumcounter"
+    table = dynamodb.Table(table_name)
+    last_shop_num = table.query(
+        KeyConditionExpression=Key("").eq("")
+    )
+    return last_shop_num
+
+
+def make_shop_uuid():
+    shop_uuid = f"shop_{str(uuid.uuid4())}"
+    print(f"shop_uuid: {shop_uuid}")
+    return shop_uuid
+
+
+def upsert_shop(dynamodb, shop):
+    table_name = "ESM"
+    ESM_table = dynamodb.Table(table_name)
+    shop_uuid = make_shop_uuid()
+    condition = "attribute_not_exists(SK) AND attribute_not_exists(Data)"
+    options = {
+        "Key": {
+            "SK": "shop",
+            "Data": shop["shop_name"]
+        },
+        "ConditionExpression": condition,
+        "UpdateExpression": "set PK = :shop_uuid, SK = :shop, Data = :shop_name, contact_url = :contact_url, description = :description,img_url = :img_url, url = :url",
+        "ExpressionAttributeValues": {
+            ":shop_uuid": shop_uuid,
+            ":shop": "shop",
+            ":shop_name": shop["shop_name"],
+            ":contact_url": shop["contact_url"],
+            ":description": shop["shop_description"],
+            ":img_url": shop["shop_img_url"],
+            ":url": shop["shop_url"]
+        }
+    }
+    ESM_table.update_item(**options)
+    return True
 
 
 def main():
+    dynamodb = boto3.resource("dynamodb")
     scraped_shop_list, scr_err_cnt = scrape_shop_list()
 
     if scraped_shop_list:
-        print("get result")
         print("scraped_shop_list")
         print(scraped_shop_list)
-        # print(f"scr_err_cnt: {scr_err_cnt}")
-        new_shop_list = remove_duplicate(scraped_shop_list)
-        save_shoplist(new_shop_list)
+        print(f"scr_err_cnt: {scr_err_cnt}")
+        for shop in scraped_shop_list:
+            upsert_shop(dynamodb, shop)
         return True
     else:
         print("no result")
-        res = {}
         return False
 
 
 def lambda_handler(event, context):
     try:
-        result = main()
+        is_completed = main()
 
-        if result:
+        if is_completed:
             print("get result")
             res = {
                 "statusCode": 200,
