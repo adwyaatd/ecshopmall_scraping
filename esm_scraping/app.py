@@ -198,7 +198,7 @@ def fetch_all_shop_list():
     return shops
 
 
-def remove_duplicate(scraped_shop_list):
+def remove_duplicate(shop_list):
     # DynamoDBからショップリストを取得
     all_shops_list = fetch_all_shop_list()
     # ショップリストと照合
@@ -235,7 +235,11 @@ def upsert_shop(dynamodb, shop):
             "Data": shop["shop_name"]
         },
         "ConditionExpression": condition,
-        "UpdateExpression": "set PK = :shop_uuid, SK = :shop, Data = :shop_name, contact_url = :contact_url, description = :description,img_url = :img_url, url = :url",
+        "UpdateExpression": "set PK = :shop_uuid, SK = :shop, #dt = :shop_name, contact_url = :contact_url, description = :description,img_url = :img_url, #url = :url",
+        "ExpressionAttributeNames": {
+            "#dt": "Data",
+            "#url": "url"
+        },
         "ExpressionAttributeValues": {
             ":shop_uuid": shop_uuid,
             ":shop": "shop",
@@ -250,15 +254,29 @@ def upsert_shop(dynamodb, shop):
     return True
 
 
-def main():
-    dynamodb = boto3.resource("dynamodb")
-    scraped_shop_list, scr_err_cnt = scrape_shop_list()
+def read_shop_list_json(json_file_name):
+    scr_err_cnt = 0
+    shop_list = json.load(open(f"./shop_list/{json_file_name}", 'r'))
+    print("shop_list")
+    print(shop_list)
 
-    if scraped_shop_list:
-        print("scraped_shop_list")
-        print(scraped_shop_list)
-        print(f"scr_err_cnt: {scr_err_cnt}")
-        for shop in scraped_shop_list:
+    return shop_list, scr_err_cnt
+
+
+def main(event):
+    dynamodb = boto3.resource("dynamodb")
+    body = event["body"]
+    should_scrape = body["should_scrape"]
+    # shop_list_json_name = body["shop_list_json_name"]
+    shop_list = body["shop_list"]
+    # print(should_scrape, shop_list_json_name)
+    shop_list = [] if should_scrape else shop_list
+
+    if shop_list:
+        print("shop_list")
+        print(shop_list)
+        # print(f"scr_err_cnt: {scr_err_cnt}")
+        for shop in shop_list:
             upsert_shop(dynamodb, shop)
         return True
     else:
@@ -268,7 +286,7 @@ def main():
 
 def lambda_handler(event, context):
     try:
-        is_completed = main()
+        is_completed = main(event)
 
         if is_completed:
             print("get result")
