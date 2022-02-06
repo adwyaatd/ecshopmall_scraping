@@ -216,32 +216,23 @@ def fetch_all_shop_list(dynamodb):
 
 def remove_duplicate_within_list(shop_list):
     print("remove_duplicate_within_list")
-    print("---------------")
-    print(f"before shop_list: {len(shop_list)}")
-    print(f"before shop_list: {shop_list}")
+    print(f"before shop_num: {len(shop_list)}")
     unique_shop_list = list(map(json.loads, set(map(json.dumps, shop_list))))
-    print(f"after unique_shop_list: {len(unique_shop_list)}")
-    print("---------------")
+    print(f"after unique_shop_num: {len(unique_shop_list)}")
     return unique_shop_list
 
 
 def remove_duplicate_with_DB(dynamodb, shop_list):
     print("remove_duplicate_with_DB")
-    # DynamoDBからショップリストを取得
+    # DynamoDBから全ショップを取得 (todo範囲指定)
     all_shops_in_DB = fetch_all_shop_list(dynamodb)
 
     # ショップ名で検索し、DBに未登録のショップだけリスト化
     shop_names_in_DB = [shop["Data"] for shop in all_shops_in_DB]
-    print(f"shop_names_in_DB shop_list: {shop_names_in_DB}")
-    print("---------------")
-    print(f"shop_list: {shop_list}")
     new_shops_list = [
         shop for shop in shop_list if shop["shop_name"] not in shop_names_in_DB]
 
-    print("---------------")
-    print(f"new_shop_list {len(new_shops_list)}")
-    print(new_shops_list)
-    print("---------------")
+    print(f"new_shop_num: {len(new_shops_list)}")
 
     return new_shops_list
 
@@ -279,7 +270,7 @@ def insert_shop(dynamodb, shop):
         "contact_url": shop["contact_url"],
         "decsription": shop["shop_description"],
         "img_url": shop["shop_img_url"],
-        "is_disable": False,
+        "is_disabled": False,
         "created_at": current_datetime,
         "modified_at": current_datetime
     }
@@ -337,8 +328,12 @@ def main(event):
     print(should_scrape)
     print(type(should_scrape))
 
-    shop_list, scr_err_cnt = scrape_shop_list(
-    ) if should_scrape else shop_list, scr_err_cnt
+    shop_list, scr_err_cnt = (scrape_shop_list()) if should_scrape else (
+        shop_list, scr_err_cnt)
+
+    print("-------------------------")
+    print(f"shop_list: {shop_list}")
+    print("-------------------------")
 
     if shop_list:
         shop_list = remove_duplicate_within_list(shop_list)
