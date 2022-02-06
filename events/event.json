@@ -1,5 +1,144 @@
 {
-  "body": "{\"message\": \"ESMScraping!\"}",
+  "old_body": "{\"message\": \"ESMScraping!\"}",
+  "body": {
+    "should_scrape": true,
+    "shop_list_json_name": "accessory.json",
+    "shop_list": [
+      {
+        "shop_name": "アパレル通販 andante",
+        "shop_description": "水着・アパレル通販ショップ",
+        "shop_url": "https://andanteshop.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/andanteshop",
+        "shop_img_url": "https://base-ec2if.akamaized.net/w=2048,a=0,q=90,u=0/images/user/logo/949682cfa6b9b33b991c67a6c3c583dd.jpg"
+      },
+      {
+        "shop_name": "test2022-02-06-1",
+        "shop_description": "日常にちょっとした可愛さを。いつもより特別な私になれる大人カジュアルスタイル。10代とは違うただ可愛いだけの洋服ではなく、20代から楽しめる毎日着たくなる大人可愛いスタイルを提案します。¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨以下の説明をお読みご了承の上ご注文下さい¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨✔️商品について\u2028\u2028・商品は決済後より、土日祝日を除く2週間から4週間での発送予定となります。・弊社は在庫を持たないのでご注文後に商品を取り寄せます。ご注文後の変更やお客様都合でのキャンセルはできませんので、よく確認してからご注文してください。・仕入先で在庫が確保できない場合は、返金のご相談をさせていただく場合がございます。・海外輸入品のため、下記に記載している様に、多少の刺繍のほつれ・製造過程上での小さな汚れ等ある場合がございます。●糸の始末が甘い\u2028●ボタンの付けが甘い●シワがある●イメージと違う●新品でもタグが付いていない\u2028など・海外商品の為、細やかな仕様変更（ボタンのデザインやステッチカラーの変更など）や、品質にばらつきがある事がございます。・発送時丁寧に検品をさせて頂きますが、着用に支障がないものは販売させて頂きますことをご理解下さいませ。・お客様のイメージ、サイズ違いでの返品、 交換は基本的にお受けできかねますが、 商品に汚れ、破け等の初期不良があった場合、 到着から3日以内にタグなどを切らずにご連絡下さい。交換対応させていただいます。・海外製品の為タグが外国語表示や、新品ですがタグが付いていない物や洗濯表示のタグも付いていない商品も御座います。ご了承の上ご注文下さい。\u2028\u2028・写真の光具合により実物のカラーと多少の相違がある場合が御座います。✔️ご注文後・noreply@thebase.inとpoet.wear@gmail.com からのメールが届くように受信設定をお願い致します。（携帯会社によっては迷惑メールに設定していなくても迷惑メールに振り分けされる場合が御座います）・\u2028\u2028noreply@thebase.inよりご注文後に注文確定のメールが自動的に届くようになっております。\u2028（数量の間違いが多いので必ずご確認をお願いします。）\u2028・発送完了の際も発送業者、追跡番号の連絡がnoreply@thebase.in より届くようになっております。\u2028（届かない場合は携帯会社によって迷惑メールと判断され受信拒否になっていると思われます。）\u2028\u2028・ベースからの自動返信メールを持って発注完了となります。✔️ ご発送について皆さまよりご注文をいただいた後に現地バイヤーの在庫を確認いたします。流動性の高い商品を扱っておりますので、ご注文をいただいた際に、在庫切れ、生産中止となっているケースもございます。 その場合はキャンセル、もしくは返金対応とさせていただきますのでご了承くださいませ。・商品がお客様のもとに到着するまで、5日間～14日程頂いております。稀に20日前後かかってしまう場合もございますのでご了承くださいませ。・お支払いが確定してからの商品発送準備となりますので、支払いが遅くなる分発送も遅くなってしまいます。・発送につきましては大切なお客様の商品ですので全て追跡番号がついているもので発送致します。 ・輸入品の為、関税で止まる場合がございます。その際はお届けが１週間ほど遅延する場合がございます。追跡番号に関しては、税関などで変更になる場合もあります。・なるべく安価で提供する為簡易包装での発送となります。 \u2028靴は箱が付かない場合もございます。\u2028\u2028・納品書につきましては個人情報保護の為、同封しておりません。ご注文確認よりお客様ご自身でご確認お願い致します。\u2028\u2028・商品を発送したのち、保管切れ、住所宛先不明で、中継センター、海外倉庫まで戻ってきた場合は転送料金2500円が発生いたします。2500円をお振込後（お振込手数料はお客様負担となります）再送させて頂きます。中継センターにて保管期間がきれてしまった商品は廃棄されます。廃棄されましても商品代金はお支払いいただくこととなりますので、スムーズに商品の受け取りをお願いいたします。✔️送料について全国一律：450円10,000円以上のお買い上げで送料無料です♪✔️商品キャンセル・返品について・お客様からご注文後すぐに発注作業に入らせていただいているためご入金、後払い決済、お支払い後のキャンセルは承っておりません。・返品は一切受け付けておりません。（詳細は特定商取引法に基づく表記の返品に関する事項をご確認下さい）\u2028\u2028・海外製品の特徴をご理解頂いた上で、お買い物をお楽しみ頂ければと思います。✔️お問い合わせについてご質問はメールにて承ります。営業日の2日以内にご返信させていただきます。気になるアイテムがありましたら、ぜひBASEのメッセージ機能やメールにてお気軽にご連絡ください♪✔️ メールはこちらpoet.wear@gmail.com",
+        "shop_url": "https://www.poet.style/",
+        "contact_url": "https://thebase.in/inquiry/llmarket",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/a65ffcf5008482d8a2bb671a5f1a44d5.png"
+      },
+      {
+        "shop_name": "Rin accessory",
+        "shop_description": "デザイン性のある服のアクセントになるようなアクセサリー。海外から可愛いと思ったものをセレクト",
+        "shop_url": "https://www.poet.style/",
+        "contact_url": "https://thebase.in/inquiry/Rinnn",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/4fc613e41e7632216f3022dfec4e700c.png"
+      },
+      {
+        "shop_name": "mite",
+        "shop_description": "",
+        "shop_url": "https://www.mite.co.jp/",
+        "contact_url": "https://thebase.in/inquiry/chibirooo",
+        "shop_img_url": "https://base-ec2if.akamaized.net/w=2048,a=0,q=90,u=0/images/user/logo/730574f1f5939a06282e7974920bbed2.jpg"
+      },
+      {
+        "shop_name": "gift project 「acelio」",
+        "shop_description": "'選ぶ人も楽しいギフト'をテーマとし、洗練されたアクセサリーや雑貨を中心とした ギフトにまつわるあらゆるものを取り扱うお店です。",
+        "shop_url": "https://acelio80.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/acelio80",
+        "shop_img_url": ""
+      },
+      {
+        "shop_name": "日本未入荷アクセサリー Leadhope",
+        "shop_description": "日本未入荷アクセサリー専門店です",
+        "shop_url": "https://acelio80.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/leadhope",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/56c495ed81592fed9ebcd876a38b9a0c.png"
+      },
+      {
+        "shop_name": "輸入アクセサリーパーツ・雑貨 kiraline - キラリネ -",
+        "shop_description": "輸入アクセサリーパーツ、ヴィンテージパーツ専門店 キラリネ - kiraline -",
+        "shop_url": "https://acelio80.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/kiraline",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/e8581aa70b24c771eae4a3305c51c1e9.png"
+      },
+      {
+        "shop_name": "Mimirie",
+        "shop_description": "'可愛いのに上品フェミニン'を叶える28才からの大人可愛いファッションを提案します୨୧*୨୧*･････････････････････････････*୨୧♡アナウンサー様に衣装提供をさせて頂きました♡http: //www.mimirie.shop/blog/2020/05/12/145132♡Mimirie商品のお客様着用画像はこちらから♡http://www.mimirie.shop/blog/2020/04/07/111016http://www.mimirie.shop/blog/2019/12/27/145204♡雑誌mamagirlの公式サイトに掲載して頂きました♡http://www.mimirie.shop/blog/2019/11/01/233326୨୧*･････････････････････････････*୨୧",
+        "shop_url": "https://www.mimirie.shop/",
+        "contact_url": "https://thebase.in/inquiry/Elise",
+        "shop_img_url": "https://base-ec2if.akamaized.net/w=2048,a=0,q=90,u=0/images/user/logo/cd9889bac0adcc3ef159500c4f8e4d77.png"
+      },
+      {
+        "shop_name": "webshopシスター社｜オリジナルアクセサリー",
+        "shop_description": "vintageパーツを使ったオリジナルアクセサリーのユニット、 シスター社のweb shopです。",
+        "shop_url": "https://www.mimirie.shop/",
+        "contact_url": "https://thebase.in/inquiry/sistersha",
+        "shop_img_url": "https://base-ec2if.akamaized.net/w=2048,a=0,q=90,u=0/images/user/logo/078e8b5072dc904516d17a920385106c.jpg"
+      },
+      {
+        "shop_name": "アクセサリーショップ gatto",
+        "shop_description": "アクセサリーのアトリエショップgattoです。大阪のレトロなビルのちいさな一室で、日々制作しています。手に取る材料次第で生まれるデザインは、千差万別。アクセサリーが大好きなみなさまに、気に入っていただけますように。",
+        "shop_url": "https://www.mimirie.shop/",
+        "contact_url": "https://thebase.in/inquiry/gatto320",
+        "shop_img_url": "https://baseec-img-mng.akamaized.net/images/user/logo/38a332909ee3811a0bb83017f151ffeb.png?imformat=generic&q=90&im=Resize,width=2048,type=downsize"
+      },
+      {
+        "shop_name": "踊るアクセサリー",
+        "shop_description": "主に天然石や歴史的名画をモチーフにした個性的なアクセサリーを激安価格で販売中です。",
+        "shop_url": "https://www.mimirie.shop/",
+        "contact_url": "https://thebase.in/inquiry/odraccessory",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/1deb72debe2d35eac7d1499f677fa667.gif"
+      },
+      {
+        "shop_name": "アパレル通販 andante",
+        "shop_description": "水着・アパレル通販ショップ",
+        "shop_url": "https://andanteshop.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/andanteshop",
+        "shop_img_url": "https://base-ec2if.akamaized.net/w=2048,a=0,q=90,u=0/images/user/logo/949682cfa6b9b33b991c67a6c3c583dd.jpg"
+      },
+      {
+        "shop_name": "Jasmine ハンドメイドアクセサリーショップ",
+        "shop_description": "オリジナルデザインのハンドメイドショップ。シンプルなデザインから大ぶりなデザインまで幅広くご用意しております。ピアス/イヤリング/ネックレス/リング/ブレスレット",
+        "shop_url": "https://andanteshop.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/jasmine0501",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/3c1946a3081493ca392036bdf707c472.png"
+      },
+      {
+        "shop_name": "noakes",
+        "shop_description": "イヤリング、イヤカフ、リングなど他にはないデザインバリエーションのアクセサリーを紹介。トレンドとヴィンテージ感をミックスしたアクセサリーを提案します。",
+        "shop_url": "https://noakes.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/noakes",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/3ca3206bd33eaaf61c629711b3fec33e.png"
+      },
+      {
+        "shop_name": "emu",
+        "shop_description": "ご覧頂きありがとうございます。・・・・・・・・・・・・・・・・・『毎日身につけたくなる』魅せる手元に。魅せる耳元に。あなたの日常をもっと輝くものに。『自分を好きな自分でいたい』そんな日常をemu accessory で。・・・・・・・・・・・・・・・・・シンプルのなかにトレンド感のあるアイテムを海外からセレクトしています。デイリー使いできるアイテムをたくさん揃えておりますので、ぜひご覧くださいませ。ご購入前には必ず商品ページのトップにある《ご注文前に》の内容も一緒にご覧ください。宜しくお願い致します。",
+        "shop_url": "https://noakes.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/emushop1901",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/8758f0f53c0a9de4fecb39dd2da81b0a.jpeg"
+      },
+      {
+        "shop_name": "踊るアクセサリー",
+        "shop_description": "主に天然石や歴史的名画をモチーフにした個性的なアクセサリーを激安価格で販売中です。",
+        "shop_url": "https://odraccessory.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/odraccessory",
+        "shop_img_url": "https://base-ec2.akamaized.net/images/user/logo/1deb72debe2d35eac7d1499f677fa667.gif"
+      },
+      {
+        "shop_name": "colorfullacc",
+        "shop_description": "アクセサリー",
+        "shop_url": "https://colorfullacc.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/colorfullacc",
+        "shop_img_url": "https://base-ec2if.akamaized.net/w=2048,a=0,q=90,u=0/images/user/logo/3701f2d9aaac3a298f7a3a7f9007ef96.png"
+      },
+      {
+        "shop_name": "ハンドメイドアクセサリー*FRAGILE",
+        "shop_description": "映画モチーフの大人可愛いハンドメイドアクセサリーショップ。",
+        "shop_url": "https://colorfullacc.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/shlimazi",
+        "shop_img_url": ""
+      },
+      {
+        "shop_name": "PIVOTDOOR",
+        "shop_description": "ユニセックスアパレルブランドPIVOT DOORのオンラインSHOPです。",
+        "shop_url": "https://pivotdoor.thebase.in/",
+        "contact_url": "https://thebase.in/inquiry/pivotdoor",
+        "shop_img_url": "https://base-ec2if.akamaized.net/w=2048,a=0,q=90,u=0/images/user/logo/b78644122d3080977a7cb01c8e4609f7.png"
+      }
+    ]
+  },
   "resource": "/base",
   "path": "/base",
   "httpMethod": "GET",

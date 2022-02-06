@@ -1,16 +1,20 @@
 import json
 import sys
 import os
-from typing import Pattern
 import traceback
-from time import sleep
 import re
+import uuid
+from datetime import datetime
 
 # import requests
 from selenium import webdriver
+from selenium.webdriver.chrome import options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
+import boto3
+from boto3.dynamodb.conditions import Key, Attr
+import pytz
 
 
 def headless_chrome():
@@ -65,6 +69,56 @@ def is_findable_element(driver, attribute, attribute_value, target=None):
     return bool(result)
 
 
+def is_official_BASE_site(driver):
+    if is_findable_element(driver, "name", "author") and driver.find_element_by_name("author").get_attribute("content") == "BASE":
+        print("BASEのサイトに入ったので次のショップへ遷移")
+        return True
+
+
+def is_not_BASE_site(driver):
+    if not is_findable_element(driver, "xpath", "//a[contains(@href,'base')]"):
+        print("Base以外のサイトに入ったので次のショップへ遷移")
+        return True
+
+
+def scrape_shop_info(driver):
+    current_url = driver.current_url
+    pattern1 = re.compile("https?://[^/]+/.+")
+    result = re.match(pattern1, current_url)
+
+    if result:
+        print(f"current_url--------------------: {current_url}")
+        pattern2 = re.compile("https?://[^/]+/")
+        home_url = re.match(pattern2, current_url).group()
+        driver.get(home_url)
+        shop_url = home_url
+    else:
+        shop_url = current_url
+
+    shop_name = driver.title
+
+    try:
+        shop_description = driver.find_element_by_name(
+            "description").get_attribute("content")
+        contact_url = driver.find_element_by_xpath(
+            "//a[contains(@href,'/inquiry/')]").get_attribute("href")
+        shop_img_url = ""
+        if is_findable_element(driver, "class_name", "logoImage"):
+            shop_img_url = driver.find_element_by_class_name(
+                "logoImage").get_attribute("src")
+        elif is_findable_element(driver, "class_name", "cot-shopLogoImage"):
+            shop_img_url = driver.find_element_by_class_name(
+                "cot-shopLogoImage").get_attribute("src")
+    except Exception as e:
+        raise e
+
+    shop_dict = {"shop_name": shop_name, "shop_description": shop_description,
+                 "shop_url": shop_url, "contact_url": contact_url, "shop_img_url": shop_img_url}
+    print(f"shop_dict: {shop_dict}")
+
+    return shop_dict
+
+
 def scrape_shop_list():
     try:
         print("start scraping shop_list")
@@ -74,7 +128,7 @@ def scrape_shop_list():
         shop_list = []
         scr_err_cnt = 0
         page_num = 1
-        max_page_num = 2
+        max_page_num = 1
         domain = "thebase.in"
         search_word = "アクセサリー"
         # base_url_list = ["developers.thebase.in", "design.thebase.in", "lp.thebase.in"]
@@ -110,50 +164,17 @@ def scrape_shop_list():
                         print(f"エラー! navigate.to url: {url} 次のショップへ遷移")
                         continue
 
-                    if is_findable_element(driver, "name", "author") and driver.find_element_by_name("author").get_attribute("content") == "BASE":
-                        print("BASEのサイトに入ったので次のショップへ遷移")
+                    if is_official_BASE_site(driver):
                         continue
-                    print("BASEのサイトチェック通過")
 
-                    if not is_findable_element(driver, "xpath", "//a[contains(@href,'base')]"):
-                        print("Base以外のサイトに入ったので次のショップへ遷移")
+                    if is_not_BASE_site(driver):
                         continue
-                    print("BASE以外のサイトチェック通過")
 
-                    current_url = driver.current_url
-                    pattern1 = re.compile("https?://[^/]+/.+")
-                    result = re.match(pattern1, current_url)
-                    if result:
-                        pattern2 = re.compile("https?://[^/]+/")
-                        home_url = re.match(pattern2, current_url).group()
-                        driver.get(home_url)
-                        shop_url = home_url
-                    else:
-                        shop_url = home_url
-                    print(f"shop_url: {shop_url}")
+                    shop_dict = scrape_shop_info(driver)
 
-                    shop_name = driver.title
-                    print(f"shop_name: {shop_name}")
-                    shop_description = driver.find_element_by_name(
-                        "description").get_attribute("content")
-                    contact_url = driver.find_element_by_xpath(
-                        "//a[contains(@href,'/inquiry/')]").get_attribute("href")
-                    if is_findable_element(driver, "class_name", "logoImage"):
-                        shop_img_url = driver.find_element_by_class_name(
-                            "logoImage").get_attribute("src")
-                    elif is_findable_element(driver, "class_name", "cot-shopLogoImage"):
-                        shop_img_url = driver.find_element_by_class_name(
-                            "cot-shopLogoImage").get_attribute("src")
-                    else:
-                        shop_img_url = ""
-
-                    shop_dict = {"shop_name": shop_name, "shop_description": shop_description,
-                                 "shop_url": shop_url, "contact_url": contact_url, "shop_img_url": shop_img_url}
-                    print(f"shop_dict: {shop_dict}")
                     shop_list.append(shop_dict)
                 except Exception as e:
-                    print(
-                        f"スクレイピングエラー ショップ名: {shop_name}, URL: {shop_url} 次のショップへ")
+                    print("スクレイピングエラー 次のショップへ")
                     print(traceback.format_exception_only(
                         type(e), e)[0].rstrip("\n"))
                     scr_err_cnt += 1
@@ -170,7 +191,6 @@ def scrape_shop_list():
                 driver.find_element_by_link_text(page_num_str).click()
             else:
                 print("次ページなし スクレイピング終了")
-                list(set(shop_list))
                 break
     except Exception as e:
         print("fatalエラー")
@@ -182,44 +202,189 @@ def scrape_shop_list():
         return shop_list, scr_err_cnt
 
 
-def save_shoplist(shop_list):
+def fetch_all_shop_list(dynamodb):
+    table_name = "ESM"
+    ESM_table = dynamodb.Table(table_name)
+    query_data = ESM_table.query(
+        IndexName="GSI1",
+        KeyConditionExpression=Key("SK").eq("shop") &
+        Key("PK").begins_with("shop_")
+    )
+    shops = query_data["Items"]
+    return shops
+
+
+def remove_duplicate_within_list(shop_list):
+    print("remove_duplicate_within_list")
+    print("---------------")
+    print(f"before shop_list: {len(shop_list)}")
+    print(f"before shop_list: {shop_list}")
+    unique_shop_list = list(map(json.loads, set(map(json.dumps, shop_list))))
+    print(f"after unique_shop_list: {len(unique_shop_list)}")
+    print("---------------")
+    return unique_shop_list
+
+
+def remove_duplicate_with_DB(dynamodb, shop_list):
+    print("remove_duplicate_with_DB")
+    # DynamoDBからショップリストを取得
+    all_shops_in_DB = fetch_all_shop_list(dynamodb)
+
+    # ショップ名で検索し、DBに未登録のショップだけリスト化
+    shop_names_in_DB = [shop["Data"] for shop in all_shops_in_DB]
+    print(f"shop_names_in_DB shop_list: {shop_names_in_DB}")
+    print("---------------")
+    print(f"shop_list: {shop_list}")
+    new_shops_list = [
+        shop for shop in shop_list if shop["shop_name"] not in shop_names_in_DB]
+
+    print("---------------")
+    print(f"new_shop_list {len(new_shops_list)}")
+    print(new_shops_list)
+    print("---------------")
+
+    return new_shops_list
+
+
+# def fetch_last_shop_num(dynamodb):
+#     table_name = "shopnumcounter"
+#     table = dynamodb.Table(table_name)
+#     last_shop_num = table.query(
+#         KeyConditionExpression=Key("").eq("")
+#     )
+#     return last_shop_num
+
+
+def make_shop_uuid():
+    shop_uuid = f"shop_{str(uuid.uuid4())}"
+    return shop_uuid
+
+
+def get_current_datetime():
+    tokyo = pytz.timezone("Asia/Tokyo")
+    current_datetime = datetime.now(tokyo).strftime("%Y-%m-%d %H:%M:%S")
+    return current_datetime
+
+
+def insert_shop(dynamodb, shop):
+    table_name = "ESM"
+    ESM_table = dynamodb.Table(table_name)
+    shop_uuid = make_shop_uuid()
+    current_datetime = get_current_datetime()
+    item = {
+        "PK": shop_uuid,
+        "SK": "shop",
+        "Data": shop["shop_name"],
+        "url": shop["shop_url"],
+        "contact_url": shop["contact_url"],
+        "decsription": shop["shop_description"],
+        "img_url": shop["shop_img_url"],
+        "is_disable": False,
+        "created_at": current_datetime,
+        "modified_at": current_datetime
+    }
+    ESM_table.put_item(Item=item)
+    return
+
+
+def update_shop(dynamodb, shop):
+    table_name = "ESM"
+    ESM_table = dynamodb.Table(table_name)
+    shop_uuid = make_shop_uuid()
+    # condition = "attribute_not_exists(SK) AND attribute_not_exists(Data)"
+    options = {
+        "Key": {
+            "SK": "shop",
+            "Data": shop["shop_name"]
+        },
+        "UpdateExpression": "set PK = :shop_uuid, SK = :shop, #dt = :shop_name, contact_url = :contact_url, description = :description,img_url = :img_url, #url = :url",
+        "ExpressionAttributeNames": {
+            "#dt": "Data",
+            "#url": "url"
+        },
+        "ExpressionAttributeValues": {
+            ":shop_uuid": shop_uuid,
+            ":shop": "shop",
+            ":shop_name": shop["shop_name"],
+            ":contact_url": shop["contact_url"],
+            ":description": shop["shop_description"],
+            ":img_url": shop["shop_img_url"],
+            ":url": shop["shop_url"]
+        },
+        "ReturnValues": "UPDATED_NEW"
+    }
+    response = ESM_table.update_item(**options)
+    return response
+
+
+def read_shop_list_json(json_file_name):
+    scr_err_cnt = 0
+    shop_list = json.load(open(f"./shop_list/{json_file_name}", 'r'))
     print("shop_list")
     print(shop_list)
 
+    return shop_list, scr_err_cnt
 
-def main():
-    shop_list, scr_err_cnt = scrape_shop_list()
+
+def main(event):
+    dynamodb = boto3.resource("dynamodb")
+    body = event["body"]
+    should_scrape = body["should_scrape"]
+    new_shop_cnt = 0
+    updated_shop_cnt = 0
+    scr_err_cnt = 0
+    shop_list = body["shop_list"]
+    print(should_scrape)
+    print(type(should_scrape))
+
+    shop_list, scr_err_cnt = scrape_shop_list(
+    ) if should_scrape else shop_list, scr_err_cnt
 
     if shop_list:
-        print("get result")
-        # print(f"shop_list: {shop_list}")
-        # print(f"scr_err_cnt: {scr_err_cnt}")
-        # save_shoplist(shop_list)
-        return True
+        shop_list = remove_duplicate_within_list(shop_list)
+        new_shop_list = remove_duplicate_with_DB(dynamodb, shop_list)
+
+        # Todo
+        existing_shop_list = []
+
+        for new_shop in new_shop_list:
+            insert_shop(dynamodb, new_shop)
+            new_shop_cnt += 1
+
+        for existing_shop in existing_shop_list:
+            # update_shop(existing_shop)
+            updated_shop_cnt += 1
+
+        return new_shop_cnt, updated_shop_cnt, scr_err_cnt
     else:
         print("no result")
-        res = {}
-        return False
+        return new_shop_cnt, updated_shop_cnt, scr_err_cnt
 
 
 def lambda_handler(event, context):
     try:
-        result = main()
+        new_shop_cnt, updated_shop_cnt, scr_err_cnt = main(event)
 
-        if result:
-            print("get result")
-            res = {
-                "statusCode": 200,
-                "body": json.dumps({
-                    "message": "success!",
-                })
-            }
-        else:
+        if new_shop_cnt == 0 and updated_shop_cnt == 0:
             print("no result")
             res = {
                 "statusCode": 200,
                 "body": json.dumps({
                     "message": "no result!",
+                    "new_shop_cnt": new_shop_cnt,
+                    "updated_shop_cnt": updated_shop_cnt,
+                    "scr_err_cnt": scr_err_cnt
+                })
+            }
+        else:
+            print("get result")
+            res = {
+                "statusCode": 200,
+                "body": json.dumps({
+                    "message": "success!",
+                    "new_shop_cnt": new_shop_cnt,
+                    "updated_shop_cnt": updated_shop_cnt,
+                    "scr_err_cnt": scr_err_cnt
                 })
             }
 
