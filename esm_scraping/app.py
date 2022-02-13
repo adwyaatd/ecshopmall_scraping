@@ -119,7 +119,7 @@ def scrape_shop_info(driver):
     return shop_dict
 
 
-def scrape_shop_list():
+def scrape_shop_list(scraping_word):
     try:
         print("start scraping shop_list")
         driver = headless_chrome()
@@ -130,12 +130,11 @@ def scrape_shop_list():
         page_num = 1
         max_page_num = 1
         domain = "thebase.in"
-        search_word = "アクセサリー"
         # base_url_list = ["developers.thebase.in", "design.thebase.in", "lp.thebase.in"]
 
         driver.get("https://www.google.co.jp/")
         search_bar = driver.find_element_by_name("q")
-        search_bar.send_keys(f"site:*.{domain} {search_word}")
+        search_bar.send_keys(f"site:*.{domain} {scraping_word}")
         search_bar.send_keys(Keys.ENTER)
 
         top_url = driver.current_url
@@ -325,10 +324,9 @@ def main(event):
     updated_shop_cnt = 0
     scr_err_cnt = 0
     shop_list = body["shop_list"]
-    print(should_scrape)
-    print(type(should_scrape))
+    scraping_word = body["shop_category"]
 
-    shop_list, scr_err_cnt = (scrape_shop_list()) if should_scrape else (
+    shop_list, scr_err_cnt = (scrape_shop_list(scraping_word)) if should_scrape else (
         shop_list, scr_err_cnt)
 
     print("-------------------------")
